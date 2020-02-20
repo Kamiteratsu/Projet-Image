@@ -190,23 +190,22 @@ void Image::afficherBoucle(){
 				break;
 			}
 			case SDL_KEYDOWN: {
-				if(events.key.keysym.scancode == SDL_SCANCODE_ESCAPE || events.key.keysym.sym == SDLK_ESCAPE) {
+				if(events.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
 					isOpen = false;
 				}
-				else if(events.key.keysym.scancode == SDL_SCANCODE_T ||
-				events.key.keysym.sym == SDLK_t ||
-				events.key.keysym.scancode == SDL_SCANCODE_G ||
-				events.key.keysym.sym == SDLK_g){
-				if(events.key.keysym.scancode == SDL_SCANCODE_T || events.key.keysym.sym == SDLK_t) {
-					if(rect.h < 200)
-            rect.h++;
-					if(rect.w < 200 )
-						rect.w ++;
-				}
-					else if( events.key.keysym.scancode == SDL_SCANCODE_G || events.key.keysym.sym == SDLK_g){
-						if(rect.h > 0) rect.h--;
-						if(rect.w > 0 )rect.w --;
-					}
+				else if(events.key.keysym.scancode == SDL_SCANCODE_T || events.key.keysym.scancode == SDL_SCANCODE_G){
+				    if(events.key.keysym.scancode == SDL_SCANCODE_T) {
+					    if(rect.h < 200)
+                            rect.h++;
+				    	if(rect.w < 200 )
+						    rect.w ++;
+				    }
+					    else if( events.key.keysym.scancode == SDL_SCANCODE_G){
+					    	if(rect.h > 0)
+                                rect.h--;
+						    if(rect.w > 0 )
+                                rect.w --;
+					    }
 
 					rect.x = (int)(200/2 - rect.w/2);
 					rect.y = (int)(200/2 - rect.h/2);
@@ -224,19 +223,19 @@ void Image::afficherBoucle(){
         void Image::draw(SDL_Rect& imageRect){
 	SDL_SetRenderDrawColor(renderer,211,211,211,255);
 	SDL_RenderClear(renderer);
-	SDL_Texture* pImgTexture = SDL_CreateTexture(renderer,SDL_PIXELFORMAT_RGBA8888,SDL_TEXTUREACCESS_TARGET,dimx,dimy);
-	SDL_SetRenderTarget(renderer,pImgTexture);
-	SDL_SetRenderDrawColor(renderer,0,0,0,255);
+	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, dimx, dimy);
+	SDL_SetRenderTarget(renderer, texture);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 	for(unsigned int y=0; y<dimy; ++y){
 		for(unsigned int x=0; x<dimx; ++x) {
 			Pixel pix = getPix(x,y);
-			SDL_SetRenderDrawColor(renderer,pix.getRouge(),pix.getVert(),pix.getBleu(),255);
-			SDL_RenderDrawPoint(renderer,x,y);
+			SDL_SetRenderDrawColor(renderer, pix.getRouge(), pix.getVert(), pix.getBleu(), 255);
+			SDL_RenderDrawPoint(renderer, x, y);
 		}
 	}
 	SDL_SetRenderTarget(renderer, nullptr);
-	SDL_RenderCopy(renderer,pImgTexture,nullptr,&imageRect);
+	SDL_RenderCopy(renderer, texture, nullptr, &imageRect);
 	SDL_RenderPresent(renderer);
 }
 
